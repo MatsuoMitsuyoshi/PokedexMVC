@@ -12,6 +12,14 @@ import UIKit
 class  PokedexCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    var pokemon: Pokemon? {
+        didSet {
+            nameLabel.text = pokemon?.name
+            imageView.image = pokemon?.image
+        }
+    }
+    
     // imageViewの設定
     let imageView: UIImageView = {
         let iv = UIImageView()

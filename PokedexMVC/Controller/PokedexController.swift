@@ -15,6 +15,7 @@ class PokedexController: UICollectionViewController {
     
     // MARK: - Properties
     
+    var pokemon = [Pokemon]()
     
     // MARK: - Init
     
@@ -35,7 +36,13 @@ class PokedexController: UICollectionViewController {
     
     // MARK: - API
     func fetchPokemon() {
-        Service.shared.fetchPokemon()
+        Service.shared.fetchPokemon { (pokemon) in
+            DispatchQueue.main.async {
+                self.pokemon = pokemon
+                self.collectionView.reloadData()
+
+            }
+        }
     }
     
     // MARK: - Helper Functions
@@ -64,14 +71,15 @@ extension PokedexController {
     
     // セルの数
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return pokemon.count
     }
     
     // セルの生成
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // セルオブジェクトの再利用
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PokedexCell
-        cell.backgroundColor = .blue
+        
+        cell.pokemon = pokemon[indexPath.item]
         
         return cell
     }

@@ -13,7 +13,7 @@ class Pokemon {
     //
     var name: String?
     var imageUrl: String?
-    var imege: UIImage?
+    var image: UIImage?
     var id: Int?
     var weight: Int?
     var height: Int?
