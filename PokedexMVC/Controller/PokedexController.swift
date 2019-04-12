@@ -10,6 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "PokedexCell"
 
+// PokedexController: メインのコントローラー
 class PokedexController: UICollectionViewController {
     
     // MARK: - Properties
@@ -23,17 +24,24 @@ class PokedexController: UICollectionViewController {
         view.backgroundColor = .blue
         
         configureViewComponents()
+        fetchPokemon()
     }
     
     // MARK: - Selectors
-    
+    // 検索アクション
     @objc func showSearchBar() {
         print(124)
     }
     
-    // MARK: - Helper Functions
+    // MARK: - API
+    func fetchPokemon() {
+        Service.shared.fetchPokemon()
+    }
     
+    // MARK: - Helper Functions
+    // 構成コンポーネントの設定
     func configureViewComponents() {
+        
         collectionView.backgroundColor = .white
         
         navigationController?.navigationBar.barTintColor = .mainPink()
@@ -44,8 +52,9 @@ class PokedexController: UICollectionViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
         
+        // 検索ボタンの色
         navigationItem.rightBarButtonItem?.tintColor = .white
-        
+        // セルの登録
         collectionView.register(PokedexCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
     
@@ -53,22 +62,28 @@ class PokedexController: UICollectionViewController {
 
 extension PokedexController {
     
+    // セルの数
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 6
     }
     
+    // セルの生成
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // セルオブジェクトの再利用
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PokedexCell
         cell.backgroundColor = .blue
+        
         return cell
     }
 }
 
+// セルの大きさやセル同士の間隔などを個別に設定
 extension PokedexController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8)
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = (view.frame.width - 36) / 3

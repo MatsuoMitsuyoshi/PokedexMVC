@@ -8,27 +8,31 @@
 
 import UIKit
 
+// カスタムセルの設定
 class  PokedexCell: UICollectionViewCell {
     
     // MARK: - Properties
-    
+    // imageViewの設定
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .groupTableViewBackground
+        // 縦横比率の設定: 縦横比率そのままで短い縦横比率そのままで長い編を基準に全体を表示
         iv.contentMode = .scaleAspectFit
         return iv
     }()
     
-    lazy var nameConteinerView: UIView = {
+    // nameContainerViewの設定
+    lazy var nameContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .mainPink()
-        
+        // nameLabelのsub_view追加
         view.addSubview(nameLabel)
         nameLabel.center(inView: view)
         
         return view
     }()
     
+    // nameLabelの設定
     let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -40,27 +44,32 @@ class  PokedexCell: UICollectionViewCell {
     
     
     // MARK: - Init
-    
+    // コードの初期化
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureViewComponents()
     }
     
+    // xibの初期化
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented") // 未実装
     }
     
     // MARK: - Helper Functions
     
     func configureViewComponents() {
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
+        self.layer.cornerRadius = 10 // 角丸設定
+        self.clipsToBounds = true // セルのぎ描画範囲を超えた表示はしない
         
+        // imageViewの追加
         addSubview(imageView)
+        // imageViewのLayoutAnchor設定
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: self.frame.height - 32)
         
-        addSubview(nameConteinerView)
-        nameConteinerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32)
+        // nameContainerViewの追加
+        addSubview(nameContainerView)
+        // nameContainerViewのLayoutAnchor設定
+        nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32)
     }
 }

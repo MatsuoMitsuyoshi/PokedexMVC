@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIColor {
+    
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
@@ -21,13 +22,14 @@ extension UIColor {
 extension UIView {
     
     func center(inView view: UIView) {
+        // AutoresizingMask: off
         self.translatesAutoresizingMaskIntoConstraints = false
         self.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     func anchor(top: NSLayoutYAxisAnchor?, left: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, right: NSLayoutXAxisAnchor?, paddingTop: CFloat, paddingLeft: CGFloat, paddingBottom: CGFloat, paddingRight: CGFloat, width: CGFloat, height: CGFloat) {
-        
+        // AutoresizingMask: off
         translatesAutoresizingMaskIntoConstraints = false
         
         if let top = top {

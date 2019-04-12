@@ -13,16 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    // アプリの初期化
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow()
-        window?.makeKeyAndVisible()
+        window?.makeKeyAndVisible() // windowを表示
 
         let layout = UICollectionViewFlowLayout()
         let navController = UINavigationController(rootViewController: PokedexController(collectionViewLayout: layout))
         
-        window?.rootViewController = navController
+        window?.rootViewController = navController // navControllerをroot__viewControllerに設定
         
         return true
     }
