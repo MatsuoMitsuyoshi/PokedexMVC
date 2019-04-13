@@ -29,7 +29,7 @@ class InfoView: UIView {
             guard let weight = pokemon.weight else { return }
             
             imageView.image = pokemon.image
-            nameLabel.text = pokemon.name
+            nameLabel.text = pokemon.name?.capitalized
             
             configureLabel(label: typeLabel, title: "Type", details: type)
             configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")

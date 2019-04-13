@@ -23,7 +23,7 @@ class  PokedexCell: UICollectionViewCell {
     
     var pokemon: Pokemon? {
         didSet {
-            nameLabel.text = pokemon?.name
+            nameLabel.text = pokemon?.name?.capitalized
             imageView.image = pokemon?.image
         }
     }

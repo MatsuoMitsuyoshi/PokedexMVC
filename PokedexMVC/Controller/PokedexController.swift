@@ -16,6 +16,9 @@ class PokedexController: UICollectionViewController {
     // MARK: - Properties
     
     var pokemon = [Pokemon]()
+    var filteredPokemon = [Pokemon]()
+    var inSearchMode = false
+    var searchBar: UISearchBar!
     
     let infoView: InfoView = {
         let view = InfoView()
@@ -42,12 +45,12 @@ class PokedexController: UICollectionViewController {
     }
     
     // MARK: - Selectors
-    // 検索アクション
+    // 検索バー表示処理
     @objc func showSearchBar() {
-        print(124)
+        configureSearchBar()
     }
     
-    //
+    // InfoView消滅処理
     @objc func handleDismissal() {
         dismissInfoView(pokemon: nil)
     }
@@ -66,6 +69,29 @@ class PokedexController: UICollectionViewController {
     
     // MARK: - Helper Functions
     
+    // 検索バー設定
+    func configureSearchBar() {
+        searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        searchBar.showsCancelButton = true
+        searchBar.becomeFirstResponder()
+        searchBar.tintColor = .white
+        
+        navigationItem.rightBarButtonItem = nil
+        navigationItem.titleView = searchBar
+    }
+    
+    //
+    func configureSearchBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        // 検索ボタンの色
+        navigationItem.rightBarButtonItem?.tintColor = .white
+
+    }
+    
+    
+    // InfoView消滅設定
     func dismissInfoView(pokemon: Pokemon?) {
         UIView.animate(withDuration: 0.5, animations: {
             self.visualEffectView.alpha = 0
@@ -88,10 +114,8 @@ class PokedexController: UICollectionViewController {
         
         navigationItem.title = "Pokedex"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        configureSearchBarButton()
         
-        // 検索ボタンの色
-        navigationItem.rightBarButtonItem?.tintColor = .white
         // セルの登録
         collectionView.register(PokedexCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -106,11 +130,43 @@ class PokedexController: UICollectionViewController {
     
 }
 
+// MARK: - UISearchBarDelegate
+
+extension PokedexController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        navigationItem.titleView = nil
+        configureSearchBarButton()
+        inSearchMode = false
+        collectionView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText == "" || searchBar.text == nil {
+            inSearchMode = false
+            collectionView.reloadData()
+            view.endEditing(true)
+        } else {
+            inSearchMode = true
+            // 頭文字から検索
+            filteredPokemon = pokemon.filter({ $0.name?.range(of: searchText.lowercased()) != nil})
+            collectionView.reloadData()
+            
+            
+        }
+    }
+}
+
+
+// MARK: - UICollectionViewDataSource/Delegate
+
 extension PokedexController {
     
     // セルの数
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return pokemon.count
+        // サーチモードなら検索結果反映、そうでなければ、ポケモンあるだけ
+        return inSearchMode ? filteredPokemon.count : pokemon.count
     }
     
     // セルの生成
@@ -118,13 +174,14 @@ extension PokedexController {
         // セルオブジェクトの再利用
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PokedexCell
         
-        cell.pokemon = pokemon[indexPath.item]
+        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
         cell.delegate = self
         
         return cell
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 // セルの大きさやセル同士の間隔などを個別に設定
 extension PokedexController: UICollectionViewDelegateFlowLayout {
     
@@ -139,6 +196,7 @@ extension PokedexController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - PokedexCellDelegate
 //
 extension PokedexController: PokedexCellDelegate {
     
@@ -163,6 +221,7 @@ extension PokedexController: PokedexCellDelegate {
     }
 }
 
+// MARK: - InfoViewDelegate
 // InfoViewを消す処理
 extension PokedexController: InfoViewDelegate {
     
