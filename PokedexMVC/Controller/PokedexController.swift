@@ -38,8 +38,6 @@ class PokedexController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.backgroundColor = .blue
-        
         configureViewComponents()
         fetchPokemon()
     }
@@ -166,7 +164,7 @@ extension PokedexController: UISearchBarDelegate {
         } else {
             inSearchMode = true
             // 頭文字から検索
-            filteredPokemon = pokemon.filter({ $0.name?.range(of: searchText.lowercased()) != nil})
+            filteredPokemon = pokemon.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
             collectionView.reloadData()
             
             
@@ -202,13 +200,16 @@ extension PokedexController {
         let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
         
         var pokemonEvoArray = [Pokemon]()
+        
         if let evoChain = poke.evolutionChain {
+            
             let evolutionChain = EvolutionChain(evolutionArray: evoChain)
             let evoIds = evolutionChain.evolutionIds
 
             evoIds.forEach { (id) in
                 pokemonEvoArray.append(pokemon[id - 1])
             }
+            
             poke.evoArray = pokemonEvoArray
         }
         
@@ -221,7 +222,9 @@ extension PokedexController {
 extension PokedexController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
         return UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

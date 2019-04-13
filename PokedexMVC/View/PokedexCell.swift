@@ -53,7 +53,6 @@ class  PokedexCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "Bulbasaur"
         return label
     }()
     
