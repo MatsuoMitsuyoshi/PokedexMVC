@@ -131,7 +131,6 @@ class InfoView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureViewComponents()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -152,6 +151,42 @@ class InfoView: UIView {
         attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         label.attributedText = attributedText
     }
+    
+    func configureViewForInfoController() {
+        
+        // 1: typeLabelの追加
+        addSubview(typeLabel)
+        // typeLabelのLayoutAnchor設定
+        typeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        // 2: defenseLabelの追加
+        addSubview(defenseLabel)
+        // defenseLabelのLayoutAnchor設定
+        defenseLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: -8, width: 0, height: 0)
+        
+        let separatorView = UIView()
+        separatorView.backgroundColor = .groupTableViewBackground
+        addSubview(separatorView)
+        separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
+        
+        // 3: heightLabelの追加
+        addSubview(heightLabel)
+        heightLabel.anchor(top: separatorView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        // 4: pokedexIdLabelの追加
+        addSubview(pokedexIdLabel)
+        pokedexIdLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: -8, width: 0, height: 0)
+        
+        // 5: attackLabelの追加
+        addSubview(attackLabel)
+        attackLabel.anchor(top: pokedexIdLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: -8, width: 0, height: 0)
+        
+        // 6: weightLabelの追加
+        addSubview(weightLabel)
+        weightLabel.anchor(top: heightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+    }
+    
     
     func configureViewComponents() {
         
@@ -188,7 +223,7 @@ class InfoView: UIView {
         addSubview(heightLabel)
         heightLabel.anchor(top: separatorView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        // 4: weightLabelの追加
+        // 4: pokedexIdLabelの追加
         addSubview(pokedexIdLabel)
         pokedexIdLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: -8, width: 0, height: 0)
         

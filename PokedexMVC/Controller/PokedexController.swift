@@ -175,10 +175,20 @@ extension PokedexController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PokedexCell
         
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        
         cell.delegate = self
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let controller = PokemonInfoController()
+        controller.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -203,6 +213,7 @@ extension PokedexController: PokedexCellDelegate {
     func presentInfoView(withPokemon pokemon: Pokemon) {
         
         view.addSubview(infoView)
+        infoView.configureViewComponents()
         infoView.delegate = self
         infoView.pokemon = pokemon
         infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 350)
