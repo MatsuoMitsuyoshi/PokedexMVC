@@ -8,10 +8,18 @@
 
 import UIKit
 
+
+protocol PokedexCellDelegate {
+    func presentInfoView(withPokemon pokemon: Pokemon)
+    
+}
+
 // カスタムセルの設定
 class  PokedexCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    var delegate: PokedexCellDelegate?
     
     var pokemon: Pokemon? {
         didSet {
@@ -65,10 +73,12 @@ class  PokedexCell: UICollectionViewCell {
     }
     
     // MARK: - Selectors
-    
+    // セルを長押しした時の処理
     @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            print("Long press did begin..")
+            guard let pokemon = self.pokemon else { return }
+            delegate?.presentInfoView(withPokemon: pokemon)
+            
         }
     }
     
